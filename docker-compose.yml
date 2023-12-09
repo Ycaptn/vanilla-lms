@@ -1,25 +1,5 @@
 version: "3"
 services:
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
-    container_name: mysql
-    tty: true
-    restart: unless-stopped
-    environment:
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    volumes:
-      - './web-server/mysqldb:/var/lib/mysql'
-      - ./web-server/init.db:/docker-entrypoint-initdb.d
-
-    networks: 
-    - webapp
-    
   app:
     build:
       context: ./web-server
@@ -36,6 +16,29 @@ services:
     networks:
       - webapp
     entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
+  
+  
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    container_name: mysql
+    tty: true
+    restart: unless-stopped
+    environment:
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - './web-server/mysqldb:/var/lib/mysql'
+      - ./web-server/init.db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks: 
+    - webapp
+    
 
 
 networks:
@@ -44,6 +47,5 @@ networks:
 
 # admin@zambezi.edu.ng
 # password
-
 
 
