@@ -1,24 +1,5 @@
 version: "3"
 services:
-  app:
-    build:
-      context: ./web-server
-    container_name: app
-    restart: unless-stopped
-    working_dir: /var/www/vanilla
-    ports:
-      - "80:80"
-    volumes:
-      - .:/var/www/vanilla
-      - ./web-server/apache2:/etc/apache2/sites-enabled
-    depends_on:
-      - mysql
-    networks:
-      - webapp
-    # entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
-  
-  
-
   mysql:
     image: mysql:8.0
     ports:
@@ -39,6 +20,22 @@ services:
     networks: 
     - webapp
     
+  app:
+    build:
+      context: ./web-server
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www/vanilla
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/vanilla
+      - ./web-server/apache2:/etc/apache2/sites-enabled
+    depends_on:
+      - mysql
+    networks:
+      - webapp
+    entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
 
 
 networks:
