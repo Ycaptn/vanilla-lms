@@ -1,0 +1,52 @@
+version: "3"
+services:
+  app:
+    build:
+      context: ./web-server
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www/vanilla
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/vanilla
+      - ./web-server/apache2:/etc/apache2/sites-enabled
+    depends_on:
+      - mysql
+    networks:
+      - webapp
+    entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
+  
+  
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    container_name: mysql
+    tty: true
+    restart: unless-stopped
+    environment:
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - './web-server/mysqldb:/var/lib/mysql'
+      - ./web-server/init.db:/docker-entrypoint-initdb.d
+
+    networks: 
+    - webapp
+    
+
+
+networks:
+  webapp:
+    driver: bridge
+
+# admin@zambezi.edu.ng
+# password
+
+
+
