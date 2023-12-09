@@ -15,7 +15,7 @@ services:
       - mysql
     networks:
       - webapp
-    entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
+    # entrypoint: ["sh", "-c", "chmod +x ./web-server/entrypoint.app.sh && exec ./web-server/entrypoint.app.sh"]
   
   
 
