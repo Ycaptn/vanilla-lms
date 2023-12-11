@@ -33,7 +33,7 @@ services:
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - './web-server/mysqldb:/var/lib/mysql'
+      - ./web-server/mysqldb:/var/lib/mysql
       - ./web-server/init.db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     networks: 
